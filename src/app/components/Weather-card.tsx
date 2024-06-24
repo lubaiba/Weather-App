@@ -30,7 +30,7 @@ export default function WeatherCard(props: any) {
       }
     } else if (wdata.weather[0].main == "Drizzle") {
       {
-        document.body.style.background = "url(img/drizzle.jpeg)";
+        document.body.style.background = "url(img/drizzle.jpg)";
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundRepeat = "no-repeat";
       }
