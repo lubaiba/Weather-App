@@ -9,7 +9,7 @@ export default function Weather() {
   const [data, setData] = useState(null);
   const [city, setCity] = useState("");
   const [forecast, setForecast] = useState([]);
-
+  const [hourly, setHourly] = useState([]);
   const fetchDatabyCity = async (city: string) => {
     try {
       const data = await WeatherService.getWeather(city);
@@ -20,6 +20,10 @@ export default function Weather() {
       const dailyForecast = filterDailyForecast(forecastData.list);
       setForecast(dailyForecast);
       console.log(dailyForecast);
+
+      const threeHourForecast = filterThreeHourForecast(forecastData.list);
+      setHourly(threeHourForecast);
+      console.log(threeHourForecast);
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
@@ -40,6 +44,10 @@ export default function Weather() {
         const dailyForecast = filterDailyForecast(forecastData.list);
         setForecast(dailyForecast);
         console.log(dailyForecast);
+
+        const threeHourForecast = filterThreeHourForecast(forecastData.list);
+        setHourly(threeHourForecast);
+        console.log(threeHourForecast);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -53,6 +61,10 @@ export default function Weather() {
     return list.filter((reading: any) => {
       return reading.dt_txt.includes("12:00:00");
     });
+  };
+
+  const filterThreeHourForecast = (list: any) => {
+    return list.slice(0, 8);
   };
 
   const handleInputChange = (e: any) => {
@@ -70,12 +82,12 @@ export default function Weather() {
       <div
         className="card text-center d-flex align-content-center align-items-center"
         style={{
-          backgroundColor:"rgba(19,74,113,0.7)",
+          backgroundColor: "rgba(19,74,113,0.7)",
           maxWidth: "400px",
-          maxHeight: "490px",
+          maxHeight: "480px",
           borderRadius: "20px",
-          marginLeft:'40%',
-          marginTop:'80px'
+          marginLeft: "40%",
+          marginTop: "30px",
         }}
       >
         <div className={styles.search}>
@@ -92,7 +104,28 @@ export default function Weather() {
         {data ? (
           <>
             <WeatherCard weatherData={data} />
-            <div className="d-flex flex-row gap-3 pt-4">
+            <div
+              className="text-white d-flex gap-3 mt-5 p-3"
+              style={{
+                backgroundColor: "rgba(19,74,113,0.7)",
+                borderRadius: "20px",
+              }}
+            >
+              {hourly.map((item: any, index: number) => {
+                return (
+                  <div key={index}>
+                    <p>{new Date(item.dt_txt).toLocaleTimeString()}</p>
+                    <img
+                      src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                      alt="weather"
+                      width={80}
+                    />
+                    <h6>{item.main.temp}°C</h6>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="d-flex flex-row gap-3 pb-3">
               {forecast.map((item: any, index: number) => {
                 return (
                   <div key={index}>
