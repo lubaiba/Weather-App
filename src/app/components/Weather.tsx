@@ -4,6 +4,7 @@ import styles from "../page.module.css";
 import WeatherCard from "./Weather-card";
 import WeatherCard2 from "./WeatherCard2";
 import { WeatherService } from "../services/weather-service";
+import BasicCard from "./Card";
 
 export default function Weather() {
   const [data, setData] = useState(null);
@@ -79,27 +80,20 @@ export default function Weather() {
 
   return (
     <>
+    <div className="container">
       <div
         className="card text-center d-flex align-content-center align-items-center"
         style={{
           backgroundColor: "rgba(19,74,113,0.7)",
-          maxWidth: "400px",
-          maxHeight: "480px",
+          maxWidth: "450px",
+          maxHeight: "510px",
           borderRadius: "20px",
-          marginLeft: "40%",
+          marginLeft: "35%",
           marginTop: "30px",
         }}
       >
         <div className={styles.search}>
-          <input
-            type="text"
-            placeholder="enter city name"
-            onChange={handleInputChange}
-            id="cityInput inputContainer"
-          />
-          <button type="button" onClick={onSubmit}>
-            <img src="img/search.png" />
-          </button>
+          <BasicCard handleInputChange={handleInputChange} onSubmit={onSubmit}/>
         </div>
         {data ? (
           <>
@@ -128,8 +122,12 @@ export default function Weather() {
             <div className="d-flex flex-row gap-3 pb-3">
               {forecast.map((item: any, index: number) => {
                 return (
-                  <div key={index}>
+                  <div key={index} className="container">
+                    <div className="row">
+                      <div className="col">
                     <WeatherCard2 wdata={item} />
+                    </div>
+                    </div>
                   </div>
                 );
               })}
@@ -138,6 +136,7 @@ export default function Weather() {
         ) : (
           <p className="text-white p-2">Loading weather data...</p>
         )}
+      </div>
       </div>
     </>
   );
